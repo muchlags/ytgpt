@@ -1,6 +1,6 @@
 {
     "name": "YTGPT",
-    "version": "0.0.0.2",
+    "version": "0.0.0.3",
     "description": "Get summaries direcly into your youtube. A poodleAI product.",
     "permissions": ["tabs"],
     "host_permissions": ["https://www.youtube.com/*"],
