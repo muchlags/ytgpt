@@ -6,7 +6,7 @@ import backoff
 import openai
 import concurrent.futures
 from youtube_transcript_api import YouTubeTranscriptApi
-from bottle import post, request, run, response, static_file
+from bottle import post, request, run, response, static_file, route
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -61,15 +61,31 @@ def summarize(video_id):
         return recursive_summarize(text)
     return simple_summarize(text)
 
-@post('/api/v1/summarize')
+def enable_cors(fn):
+    def _enable_cors(*args, **kwargs):
+        # set CORS headers
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+        if request.method != 'OPTIONS':
+            # actual request; reply with the actual response
+            return fn(*args, **kwargs)
+
+    return _enable_cors
+
+@route('/api/v1/summarize', method=['OPTIONS', 'POST'])
+@enable_cors
 def index():
     videoId = request.json.get('videoId')
     if not videoId:
+        print('No video id')
         response.status = 500
         return 'Internal server error\n'
     try:
         summary = summarize(videoId)
-    except:
+    except Exception as e:
+        print(e)
         response.status = 500
         return 'Internal server error\n'
     return { 'summary': summary.strip() }
