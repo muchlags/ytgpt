@@ -76,7 +76,7 @@ def enable_cors(fn):
 
 @route('/api/v1/summarize', method=['OPTIONS', 'POST'])
 @enable_cors
-def index():
+def post_summarize():
     videoId = request.json.get('videoId')
     if not videoId:
         print('No video id')
