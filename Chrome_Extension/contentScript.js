@@ -5,7 +5,7 @@
 	 *  Use this waiting function in place of setTimeout
 	 */
 
-	let YTURL = "";
+	let ytId = "";
 	function waitForElmToLoad(selector) {
 		return new Promise((resolve) => {
 			if (document.querySelector(selector)) {
@@ -26,8 +26,8 @@
 		});
 	}
 
-	const getSummaryData = async (ytUrl) => {
-		let obj = { link: ytUrl };
+	const getSummaryData = async (ytId) => {
+		let obj = { videoId: ytId };
 		const data = JSON.stringify(obj);
 		const response = await fetch(
 			"https://ytgpt.airinterview.live/api/v1/summarize",
@@ -53,7 +53,8 @@
 	chrome.runtime.onMessage.addListener((obj, sender, response) => {
 		const { type, ytUrl } = obj;
 
-		YTURL = ytUrl;
+    const url = new URL(ytUrl);
+    ytId = url.searchParams.get("v");
 		if (type === "NEW") {
 			onYtPageLoad();
 		}
@@ -97,7 +98,7 @@
 			summaryDiv.innerHTML = await html.text();
 			ytSidePannel.prepend(summaryDiv);
 
-			let summaryData = await getSummaryData(YTURL);
+			let summaryData = await getSummaryData(ytId);
 			let textDiv = await waitForElmToLoad('[id="summaryText"]');
 			textDiv.querySelector(".loader").style.display = "none";
 			textDiv.innerText = summaryData;
