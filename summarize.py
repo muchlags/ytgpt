@@ -83,11 +83,13 @@ def post_summarize():
         response.status = 500
         return 'Internal server error\n'
     try:
+        print(f'Received request to summarize "{videoId}"')
         summary = summarize(videoId)
     except Exception as e:
         print(e)
         response.status = 500
         return 'Internal server error\n'
+    print(f'Summary of "{videoId}":\n{summary.strip()}')
     return { 'summary': summary.strip() }
 
 run(server='paste', host='localhost', port=8080)
