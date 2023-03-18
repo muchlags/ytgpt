@@ -3,6 +3,8 @@ YTGPT is a Google Chrome extension that uses the power of OpenAI's GPT-3 languag
 
 YTGPT's summarization feature is particularly useful for those who don't have the time to watch lengthy YouTube videos, but still want to know the key points and takeaways. By simply clicking the YTGPT icon while watching a video, you can quickly generate a summary that captures the essence of the video.
 
+https://user-images.githubusercontent.com/54985621/226095065-93854bb9-3e81-4249-b918-8286e51dce1d.mp4
+
 # Usage
 Unpack and install the chrome extension.
 
